@@ -43,7 +43,6 @@
           email: formData.get("email"),
           password: formData.get("password"),
         };
-
         try {
           const response = await fetch("/users/api/signup/", {
             method: "POST",
@@ -53,13 +52,25 @@
             body: JSON.stringify(data),
           });
 
+          const responseData = await response.json();
           if (response.ok) {
-            const responseData = await response.json();
-            alert("Signup successful!"); // You can add custom success handling here
+            alert("Signup successful!");
+            // Perform other actions on successful signup
           } else {
+            console.log(responseData); // Check the response data in the console
+
+            if (responseData.phone_number) {
+              const errorMessage = responseData.phone_number[0]; // Access the first element of the array
+              alert(errorMessage); // Display error message
+            } else {
+              alert("Signup failed. Unknown error."); // Fallback error message
+            }
+
             console.error("Signup failed.");
+            console.log(response);
           }
         } catch (error) {
+          alert("Error during signup: " + error.message);
           console.error("Error during signup:", error);
         }
       });

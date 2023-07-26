@@ -13,6 +13,16 @@ class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+    def post(self, request, *args, **kwargs):
+        serializer = CustomUserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Signup successful.'}, status=status.HTTP_201_CREATED)
+        else:
+            error_data = serializer.errors
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserLoginView(generics.CreateAPIView):
     serializer_class = UserLoginSerializer
