@@ -1,0 +1,68 @@
+<!-- frontend_signup.html -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Signup</title>
+  </head>
+  <body>
+    <h1>User Signup</h1>
+
+    <!-- Signup Form -->
+    <form id="signup-form">
+      {% csrf_token %}
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" required />
+      <br />
+      <label for="phone_number">Phone Number:</label>
+      <input type="text" name="phone_number" id="phone_number" required />
+      <br />
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" required />
+      <br />
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required />
+      <br />
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <!-- JavaScript code for handling signup -->
+    <script>
+      // JavaScript code for handling signup
+      const signupForm = document.getElementById("signup-form");
+
+      signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(signupForm);
+        const data = {
+          name: formData.get("name"),
+          phone_number: formData.get("phone_number"),
+          email: formData.get("email"),
+          password: formData.get("password"),
+        };
+
+        try {
+          const response = await fetch("/users/api/signup/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          if (response.ok) {
+            const responseData = await response.json();
+            alert("Signup successful!"); // You can add custom success handling here
+          } else {
+            console.error("Signup failed.");
+          }
+        } catch (error) {
+          console.error("Error during signup:", error);
+        }
+      });
+    </script>
+  </body>
+</html>
