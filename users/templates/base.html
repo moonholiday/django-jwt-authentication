@@ -1,5 +1,7 @@
 <!doctype html>
+{% load static%}
 <html>
+  <link rel="stylesheet" href="{% static 'style.css' %}"
   <body>
     <h1>django jwt-auth</h1>
     <a href="{% url 'login' %}">Login</a>
